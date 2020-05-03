@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './countries_dialog.dart';
+import './country.dart';
 
 class CountryPicker extends StatefulWidget {
   @override
@@ -8,8 +9,7 @@ class CountryPicker extends StatefulWidget {
 }
 
 class _CountryPickerState extends State<CountryPicker> {
-  String _selectedCountry = null;
-  String _val = "old val";
+  Country _selectedCountry = new Country(name: '', isoCode: '');
 
   @override
   Widget build(BuildContext context) {
@@ -18,19 +18,26 @@ class _CountryPickerState extends State<CountryPicker> {
     return Container(
       child: Column(
         children: <Widget>[
-          Text(_val),
-          RaisedButton(onPressed: () => askCountry(context), child: Text("COUNTRY"),),
+          Text(_selectedCountry.name),
+          RaisedButton(
+            onPressed: () => askCountry(context),
+            child: Text("COUNTRY"),
+          ),
         ],
       ),
     );
   }
 
-  Future<String> askCountry(BuildContext ctx ) async {
-    String newVal = await showDialog<String>(context: ctx, builder: (BuildContext context) {
-      return CountriesDialog();
-    });
-    setState(() {
-      _val = newVal;
-    });
+  Future<Country> askCountry(BuildContext ctx) async {
+    Country newCountry = await showDialog<Country>(
+        context: ctx,
+        builder: (BuildContext context) {
+          return CountriesDialog();
+        });
+    if (newCountry != null) {
+      setState(() {
+        _selectedCountry = newCountry;
+      });
+    }
   }
 }
