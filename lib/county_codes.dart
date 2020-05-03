@@ -1,9 +1,6 @@
 import './country.dart';
 
 List<Country> countries = [
-  new Country(name: "Anonymous Proxy", isoCode: "A1"),
-new Country(name: "Satellite Provider", isoCode: "A2"),
-new Country(name: "Other Country", isoCode: "O1"),
 new Country(name: "Andorra", isoCode: "AD"),
 new Country(name: "United Arab Emirates", isoCode: "AE"),
 new Country(name: "Afghanistan", isoCode: "AF"),
@@ -255,4 +252,5 @@ new Country(name: "Mayotte", isoCode: "YT"),
 new Country(name: "South Africa", isoCode: "ZA"),
 new Country(name: "Zambia", isoCode: "ZM"),
 new Country(name: "Zimbabwe", isoCode: "ZW"),
+new Country(name: "Other Country", isoCode: "O1"),
 ];

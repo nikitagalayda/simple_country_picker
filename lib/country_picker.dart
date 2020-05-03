@@ -13,14 +13,13 @@ class _CountryPickerState extends State<CountryPicker> {
 
   @override
   Widget build(BuildContext context) {
-    var mediaQuery = MediaQuery.of(context).size;
 
     return Container(
       child: Column(
         children: <Widget>[
           Text(_selectedCountry.name),
           RaisedButton(
-            onPressed: () => askCountry(context),
+            onPressed: () => setCountry(context),
             child: Text("COUNTRY"),
           ),
         ],
@@ -28,7 +27,7 @@ class _CountryPickerState extends State<CountryPicker> {
     );
   }
 
-  Future<Country> askCountry(BuildContext ctx) async {
+  void setCountry(BuildContext ctx) async {
     Country newCountry = await showDialog<Country>(
         context: ctx,
         builder: (BuildContext context) {

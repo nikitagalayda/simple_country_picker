@@ -51,18 +51,14 @@ class _CountriesDialogState extends State<CountriesDialog> {
   }
  
   // TODO: add "best match" feature
+  // TODO: add country code search feature
   
   void filterCountryList(String text) {
-    print(text);
-    print("before");
     final filteredCountries = countries.where((country) {
       return country.name.toLowerCase().startsWith(text.toLowerCase().trim());
     });
-    print("after filter");
-    print(filteredCountries);
     setState(() {
       countryList = filteredCountries.toList();
     });
-    // print(countryList);
   }
 }
