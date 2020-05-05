@@ -18,57 +18,52 @@ class _CountriesDialogState extends State<CountriesDialog> {
   }
 
   //TODO: fix the scrollable textfield bug
-  
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
 
-    return Container(
-      child: SimpleDialog(
-        // contentPadding: EdgeInsets.all(0),
-        // titlePadding: EdgeInsets.all(50),
-        children: [
-          Column(
+    return SimpleDialog(
+      contentPadding: EdgeInsets.all(0),
+      children: [
+        Container(
+          height: mediaQuery.height * 0.7,
+          // color: Colors.red,
+          // Using ListView instead of Column fixes the scroll issue,
+          // TODO: find out why
+          child: ListView(
             children: <Widget>[
               Container(
-                decoration: BoxDecoration(),
+                height: mediaQuery.height * 0.1,
                 padding: EdgeInsets.all(15),
                 child: TextField(
+                  scrollPhysics: NeverScrollableScrollPhysics(),
                   onChanged: (text) => filterCountryList(text),
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(bottom: 20),
-                // TODO: change height dynamically depending on how many items are shown
-                // problem: when only a few items are showing, a lot of white space left in dialog
-                height: mediaQuery.height * 0.7,
-                width: mediaQuery.width * 0.7,
-                child: Container(
-                  // margin: EdgeInsets.only(bottom: 30),
-                  child: ListView.separated(
-                      itemCount: countryList.length,
-                      separatorBuilder: (context, index) {
-                        return Divider();
-                      },
-                      itemBuilder: (BuildContext context, int index) {
-                        Country country = countryList[index];
-                        return Container(
-                          // padding: EdgeInsets.only(bottom: 10),
-                          // margin: EdgeInsets.only(bottom: 10),
-                          child: ListTile(
-                            title: Text(country.name),
-                            onTap: () {
-                              Navigator.pop(context, country);
-                            },
-                          ),
-                        );
-                      }),
-                ),
+                height: mediaQuery.height * 0.6,
+                child: ListView.separated(
+                    itemCount: countryList.length,
+                    separatorBuilder: (context, index) {
+                      return Divider();
+                    },
+                    itemBuilder: (BuildContext context, int index) {
+                      Country country = countryList[index];
+                      return Container(
+                        child: ListTile(
+                          title: Text(country.name),
+                          onTap: () {
+                            Navigator.pop(context, country);
+                          },
+                        ),
+                      );
+                    }),
               ),
             ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
