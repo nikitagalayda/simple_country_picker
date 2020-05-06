@@ -10,11 +10,14 @@ class CountriesDialog extends StatefulWidget {
 
 class _CountriesDialogState extends State<CountriesDialog> {
   List<Country> countryList;
+  double dialogSize;
+  int textFieldHeight = 100;
 
   @override
   void initState() {
     super.initState();
     countryList = countries;
+    dialogSize = 0.7;
   }
 
   //TODO: fix the scrollable textfield bug
@@ -23,51 +26,66 @@ class _CountriesDialogState extends State<CountriesDialog> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
 
-    return SimpleDialog(
-      contentPadding: EdgeInsets.all(0),
-      children: [
-        Container(
-          height: mediaQuery.height * 0.7,
-          // color: Colors.red,
-          // Using ListView instead of Column fixes the scroll issue,
-          // TODO: find out why
-          child: ListView(
-            children: <Widget>[
-              Container(
-                height: mediaQuery.height * 0.1,
-                padding: EdgeInsets.all(15),
-                child: TextField(
-                  scrollPhysics: NeverScrollableScrollPhysics(),
-                  onChanged: (text) => filterCountryList(text),
+    return Container(
+      height: mediaQuery.height * dialogSize,
+      // height: 200,
+      child: SimpleDialog(
+        contentPadding: EdgeInsets.all(0),
+        children: [
+          Container(
+            // height: 200,
+            height: mediaQuery.height * dialogSize,
+            // color: Colors.red,
+            // Using ListView instead of Column fixes the scroll issue,
+            // TODO: find out why
+            child: ListView(
+              children: <Widget>[
+                Container(
+                  height: 100,
+                  // height: mediaQuery.height * (dialogSize * 1/5),
+                  padding: EdgeInsets.all(15),
+                  child: TextField(
+                    scrollPhysics: NeverScrollableScrollPhysics(),
+                    onChanged: (text) => filterCountryList(text),
+                    onTap: () => changeDialogSize(0.4),
+                  ),
                 ),
-              ),
-              Container(
-                height: mediaQuery.height * 0.6,
-                child: ListView.separated(
-                    itemCount: countryList.length,
-                    separatorBuilder: (context, index) {
-                      return Divider();
-                    },
-                    itemBuilder: (BuildContext context, int index) {
-                      Country country = countryList[index];
-                      return Container(
-                        child: ListTile(
-                          title: Text(country.name),
-                          onTap: () {
-                            Navigator.pop(context, country);
-                          },
-                        ),
-                      );
-                    }),
-              ),
-            ],
+                Container(
+                  // color: Colors.green,
+                  // height: 150,
+                  height: mediaQuery.height * dialogSize - textFieldHeight,
+                  child: ListView.separated(
+                      itemCount: countryList.length,
+                      separatorBuilder: (context, index) {
+                        return Divider();
+                      },
+                      itemBuilder: (BuildContext context, int index) {
+                        Country country = countryList[index];
+                        return Container(
+                          child: SimpleDialogOption(
+                            child: Text(country.name),
+                            onPressed: () {
+                              Navigator.pop(context, country);
+                            },
+                          ),
+                        );
+                      }),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   // TODO: add country code search feature
+
+  void changeDialogSize(double newSize) {
+    setState(() {
+      dialogSize = newSize;
+    });
+  }
 
   void filterCountryList(String text) {
     final filteredCountries = countries.where((country) {
@@ -79,6 +97,9 @@ class _CountriesDialogState extends State<CountriesDialog> {
     if (filteredCountries.isNotEmpty) {
       setState(() {
         countryList = filteredCountries.toList();
+        countryList.forEach((f) {
+          print(f.name);
+        });
       });
     }
   }
